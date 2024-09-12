@@ -4,7 +4,7 @@ const cors = require("cors");
 const app = express();
 const PORT = process.env.PORT || 5000;
 app.use(cors());
-const db = require("./Database/db");
+const db = require("./Database/db.js");
 app.use(express.json());
 app.use(bodyParser.json());
 const RoutesFilm = require("./Routes/Film.js");
