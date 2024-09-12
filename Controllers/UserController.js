@@ -25,7 +25,48 @@ const Login = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-https: module.exports = {
+const authMiddleware = (req, res, next) => {
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) return res.status(401).json({ error: "No token provided" });
+
+  jwt.verify(token, "yaya_2020", (err, decoded) => {
+    if (err) return res.status(401).json({ error: "Invalid token" });
+    req.user = decoded;
+    next();
+  });
+};
+
+const ShowProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.userId).select("-password");
+    if (!user) return res.status(404).json({ error: "User not found" });
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+const UpdateProfile = async (req, res) => {
+  const { name, email, password } = req.body;
+  try {
+    const user = await User.findById(req.user.userId);
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    if (name) user.name = name;
+    if (email) user.email = email;
+    if (password) user.password = password; 
+
+    await user.save();
+    res.json({ message: "Profile updated successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+module.exports = {
   Login,
   Register,
+  ShowProfile,
+  UpdateProfile,
+  authMiddleware,
 };
