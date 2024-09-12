@@ -1,9 +1,12 @@
 const FilmModul = require("../Models/Film");
 const axios = require("axios");
-
+let filmsFetched = false;
 const ListeFilms = async (req, res) => {
   try {
-    FetchFilms();
+    if (!hasFilmsBeenFetched()) {
+      await FetchFilms();
+      setFilmsFetched(true);
+    }
     const resultats = await FilmModul.find({});
     res.json(resultats);
   } catch (err) {
@@ -12,36 +15,39 @@ const ListeFilms = async (req, res) => {
 };
 
 const AjouterFilm = async (req, res) => {
-  const id = req.body.id;
-  const title = req.body.title;
-  const backdrop_path = req.body.backdrop_path;
-  const overview = req.body.overview;
-  const original_title = req.body.original_title;
-  const adult = req.body.adult;
-  const poster_path = req.body.poster_path;
-  const media_type = req.body.media_type;
-  const genre_ids = req.body.genre_ids;
-  const release_date = req.body.release_date;
-  const video = req.body.video;
-  const popularity = req.body.popularity;
-  const vote_average = req.body.vote_average;
-  const vote_count = req.body.vote_count;
+  const {
+    id,
+    title,
+    backdrop_path,
+    overview,
+    original_title,
+    adult,
+    poster_path,
+    media_type,
+    genre_ids,
+    release_date,
+    video,
+    popularity,
+    vote_average,
+    vote_count,
+  } = req.body;
   let newFilm = new FilmModul({
-    id: id,
-    title: title,
-    backdrop_path: backdrop_path,
-    overview: overview,
-    original_title: original_title,
-    adult: adult,
-    poster_path: poster_path,
-    media_type: media_type,
-    genre_ids: genre_ids,
-    release_date: release_date,
-    video: video,
-    popularity: popularity,
-    vote_average: vote_average,
-    vote_count: vote_count,
+    id,
+    title,
+    backdrop_path,
+    overview,
+    original_title,
+    adult,
+    poster_path,
+    media_type,
+    genre_ids,
+    release_date,
+    video,
+    popularity,
+    vote_average,
+    vote_count,
   });
+
   newFilm.save();
   res.redirect("/api/Films");
 };
@@ -68,7 +74,7 @@ const ModifierFilm = async (req, res) => {
       if (!doc) {
         return res.status(404).send("Document not found");
       }
-      res.redirect("/api/Films");
+      res.json(doc);
     })
     .catch((err) => {
       console.error(err);
@@ -82,7 +88,7 @@ const SupprimerFilm = async (req, res) => {
       if (!doc) {
         return res.status(404).send("Document not found");
       }
-      res.redirect("/api/Films");
+      res.json(doc);
     })
     .catch((err) => {
       console.error(err);
@@ -127,6 +133,13 @@ const FetchFilms = async () => {
     console.error("Error fetching data from API or saving to MongoDB:", error);
     throw error;
   }
+};
+const setFilmsFetched = (status) => {
+  filmsFetched = status;
+};
+
+const hasFilmsBeenFetched = () => {
+  return filmsFetched;
 };
 https: module.exports = {
   ListeFilms,

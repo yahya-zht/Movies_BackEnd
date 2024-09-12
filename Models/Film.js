@@ -11,7 +11,7 @@ const filmSchema = new mongoose.Schema({
   },
   backdrop_path: {
     type: String,
-    required: true,
+    // required: true,
   },
   overview: {
     type: String,
@@ -19,7 +19,7 @@ const filmSchema = new mongoose.Schema({
   },
   original_title: {
     type: String,
-    required: true,
+    // required: true,
   },
   adult: {
     type: Boolean,
@@ -27,15 +27,15 @@ const filmSchema = new mongoose.Schema({
   },
   poster_path: {
     type: String,
-    required: true,
+    // required: true,
   },
   media_type: {
     type: String,
-    required: true,
+    // required: true,
   },
   genre_ids: {
     type: Array,
-    required: true,
+    // required: true,
   },
   release_date: {
     type: String,
@@ -43,7 +43,7 @@ const filmSchema = new mongoose.Schema({
   },
   video: {
     type: Boolean,
-    default: true,
+    // default: true,
   },
   popularity: {
     type: Number,
