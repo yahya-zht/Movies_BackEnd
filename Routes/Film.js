@@ -5,7 +5,7 @@ const {
   DetailsFilm,
   SupprimerFilm,
   ModifierFilm,
-} = require("./Controllers/FilmController");
+} = require("../Controllers/FilmController");
 const router = express.Router();
 router.get("/", ListeFilms);
 router.post("/", AjouterFilm);

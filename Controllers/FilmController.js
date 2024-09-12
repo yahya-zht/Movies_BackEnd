@@ -1,4 +1,4 @@
-const FilmModul = require("../Models/FilmModul");
+const FilmModul = require("../Models/Film");
 const axios = require("axios");
 
 const ListeFilms = async (req, res) => {
